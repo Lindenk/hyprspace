@@ -4,4 +4,5 @@ use serde::{Deserialize, Serialize};
 pub enum HyprspaceRequest {
   ShowHyprspace { name: String },
   CreateHyprspace { name: String, monitors: Vec<String> },
+  DeleteHyprspace { name: String },
 }

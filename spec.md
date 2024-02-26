@@ -16,6 +16,10 @@ Specifying monitors will use the currently active workspaces on those monitors b
 
 `hyprspace show <name/id>` will move all workspaces in the hyprspace to their respective monitors
 
+## Delete a hyprspace
+
+`hyprspace delete <name/id>`
+
 ## Query hyprspace state
 
 `hyprspace query (--id)` gets the names(ids) of all hyprspaces

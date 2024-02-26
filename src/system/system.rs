@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use anyhow::anyhow;
 use hyprland::{
-  data::{Monitors, Workspace, Workspaces},
+  data::Monitors,
   dispatch::{Dispatch, DispatchType, MonitorIdentifier, WorkspaceIdentifier},
   shared::HyprData,
 };
@@ -34,6 +34,10 @@ impl HyprspaceSystem {
         .show_hyprspace(name)
         .await
         .and(Ok(HyprspaceResponse::Success)),
+      HyprspaceRequest::DeleteHyprspace { name } => self
+        .delete_hyprspace(name)
+        .await
+        .and(Ok(HyprspaceResponse::Success)),
     }
     .into()
   }
@@ -51,13 +55,19 @@ impl HyprspaceSystem {
     Ok(())
   }
 
+  pub async fn delete_hyprspace(&mut self, name: String) -> Result<()> {
+    if let None = self.hyprspaces.remove(&name) {
+      Err(anyhow!("Hyprspace {} not found", name))?;
+    }
+
+    Ok(())
+  }
+
   pub async fn show_hyprspace(&mut self, space: String) -> Result<()> {
     let space = self
       .hyprspaces
       .get(&space)
       .ok_or(anyhow!("Hyprspace {} not found", space))?;
-
-    println!("swapping to hyprspace: {:?}", space);
 
     for ws in space.iter_workspaces() {
       println!("moving workspace {} to monitor {}", ws.id, ws.monitor_id);
