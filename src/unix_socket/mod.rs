@@ -15,6 +15,9 @@ pub async fn dispatch(command: Commands) -> Result<()> {
     Commands::Show { name } => {
       client::client_send(HyprspaceRequest::ShowHyprspace { name }).await?
     }
+    Commands::Rm { name } => {
+      client::client_send(HyprspaceRequest::DeleteHyprspace { name }).await?
+    }
     Commands::Daemonize { fork } => {
       server::daemonize(fork).await?;
       HyprspaceResponse::Success
